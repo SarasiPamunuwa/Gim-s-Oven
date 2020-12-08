@@ -1,0 +1,136 @@
+<?php
+	session_start();
+
+	if(isset($_SESSION['userSession'])){
+		header("Location: index.php");
+	}
+	
+	include "dbconfig.php";
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome to Signup Page</title>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<h1>Sign Up Page</h1>
+	<hr>
+	<div class="container">
+
+		<?php
+		if(isset($_POST['btnsignup'])){
+			$username=$_POST['username'];
+			$email=$_POST['email'];
+			$phone=$_POST['phone'];
+			$dob=$_POST['dob'];
+			$gender=$_POST['gender'];
+
+			$pass1=$_POST['pass1'];
+			$pass2=$_POST['pass2'];
+
+			/*Check if the account is exist*/
+			$sqlchk="SELECT * FROM users WHERE email='$email'";
+			$exechk=mysqli_query($con, $sqlchk);
+			if(mysqli_num_rows($exechk)>=1){
+				/*Account found*/
+				?>
+				<span class="text text-danger">Sorry, the email is exist! Please <a href="login.php" class="btn">Login</a></span>
+				<?php
+			}else{
+				/*Account not found*/
+
+				/*Check if the passwords match*/
+				if($pass1==$pass2){
+					/*Matched*/
+
+					/*Encrypt the password*/
+					$password=md5($pass1);
+
+					/*Add details to database*/
+					$sql="INSERT INTO users VALUES (null, '$username', '$email', '$password', '$phone', '$dob', '$gender' )";
+					$exe=mysqli_query($con, $sql);
+					if($exe){
+						/*Insert success*/
+						?>
+						<span class="text text-success">You have successfully created the account! <a href="login.php" class="btn">Login</a></span>
+						<?php
+					}else{
+						/*Insert Fail*/
+						?>
+						<span class="text text-danger">Error: <?php echo mysqli_error($con); ?></span>
+						<?php
+					}
+				}else{
+					/*Not matched*/
+					?>
+					<span class="text text-danger">Sorry, the Passwords didn't match!</span>
+					<?php
+				}
+			}
+
+		}
+		?>
+
+
+				<form class="form" action="" method="post" style="width: 100%;">
+		<div class="row justify-content-center">
+
+			<div class="col-lg-6 col-md-6 col-sm-12">
+					<div class="form-group">
+						<label>Username</label>
+						<input type="text" name="username" class="form-control form-control-sm" required placeholder="Enter Username" value="<?php if(isset($_POST['btnsignup'])){ echo $_POST['username']; } ?>">
+					</div>
+					<div class="form-group">
+						<label>Phone No</label>
+						<input type="text" name="phone" class="form-control form-control-sm" required placeholder="Enter Phone No"  value="<?php if(isset($_POST['btnsignup'])){ echo $_POST['phone']; } ?>">
+					</div>
+					<div class="form-group">
+						<label>Date of Birth</label>
+						<input type="date" name="dob" class="form-control form-control-sm" required placeholder="Enter Phone No"  value="<?php if(isset($_POST['btnsignup'])){ echo $_POST['dob']; } ?>">
+					</div>
+					<div class="form-group">
+						<label>Gender</label>
+						<select name="gender" class="form-control form-control-sm" required>
+							<option value="Male"  <?php if(isset($_POST['btnsignup']) && $_POST['gender']=="Male"){ echo "selected"; } ?>>Male</option>
+							<option value="Female"  <?php if(isset($_POST['btnsignup']) && $_POST['gender']=="Female"){ echo "selected"; } ?>>Female</option>
+						</select>
+					</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12">
+					<div class="form-group">
+						<label>Email</label>
+						<input type="email" name="email" class="form-control form-control-sm" required placeholder="Enter Email"  value="<?php if(isset($_POST['btnsignup'])){ echo $_POST['email']; } ?>">
+					</div>
+					<div class="form-group">
+						<label>Type Password</label>
+						<input type="password" name="pass1" class="form-control form-control-sm" required placeholder="Enter New Password">
+					</div>
+					<div class="form-group">
+						<label>Retype Password</label>
+						<input type="password" name="pass2" class="form-control form-control-sm" required placeholder="Retype Password">
+					</div>
+					<div class="form-group">
+						<br>
+						<input type="submit" name="btnsignup" value="Signup" class="btn btn-primary">
+
+						
+						<a href="index.php" class="btn btn-info float-right">Go Home</a>
+					</div>
+			</div>
+		</div>
+				</form>
+	</div>
+</body>
+</html>
