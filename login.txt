@@ -1,0 +1,107 @@
+<?php
+	session_start();
+
+	/*Logout code*/
+	if(isset($_GET['logout'])){
+		session_destroy();
+	}
+
+	/*If user comes to this page when he has loged in, it will direct to home page*/
+	if(isset($_SESSION['userSession'])){
+		header("Location: index.php");
+	}
+	include "dbconfig.php";
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome to Login Page</title>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<h1>Login Page</h1>
+	<hr>
+	<div class="container">
+
+		<?php
+		if(isset($_POST['btnlogin'])){
+			$email=$_POST['email'];
+			$pass1=$_POST['pass1'];
+
+			/*Check the user*/
+			$sqlchk="SELECT * FROM users WHERE email='$email'";
+			$exechk=mysqli_query($con, $sqlchk);
+			if(mysqli_num_rows($exechk)>=1){
+				/*if the user exist*/
+
+				/*Check password*/
+				$rowchk=mysqli_fetch_array($exechk);
+				
+				/*encrypted password form db*/
+				$passfromDB=$rowchk['password'];
+
+				/*Encrypt entered password*/
+				$password=md5($pass1);
+				
+				if($passfromDB==$password){
+					/*if passwords match*/
+
+					/*Set up session values*/
+					$_SESSION['userSession']=$rowchk['userID'];
+					$_SESSION['username']=$rowchk['username'];
+					$_SESSION['email']=$rowchk['email'];
+
+					/*Direct to home page*/
+					header("Location: index.php");
+				}else{
+					/*if passwords didn't match*/
+					?>
+					<span class="text text-danger">Sorry, Your Password is wrong!s</span>
+					<?php
+				}
+			}else{
+				/*if the user doesn't exist*/
+				?>
+				<span class="text text-danger">Sorry, you are not a registered user! Please <a href="signup.php" class="btn">Signup</a></span>
+				<?php
+			}
+		}
+		?>
+
+
+		<form class="form" action="" method="post" style="width: 100%;">
+			<div class="row justify-content-center">
+
+				<div class="col-lg-6 col-md-6 col-sm-12">
+					<div class="form-group">
+						<label>Email</label>
+						<input type="email" name="email" class="form-control form-control-sm" required placeholder="Enter Email"  value="<?php if(isset($_POST['btnsignup'])){ echo $_POST['email']; } ?>">
+					</div>
+					<div class="form-group">
+						<label>Type Password</label>
+						<input type="password" name="pass1" class="form-control form-control-sm" required placeholder="Enter Password">
+					</div>
+					<div class="form-group">
+						<br>
+						<input type="submit" name="btnlogin" value="Login" class="btn btn-primary">
+
+						<a href="index.php" class="btn btn-info float-right">Go Home</a>
+					</div>
+				</div>
+				
+			</div>
+		</form>
+	</div>
+</body>
+</html>
