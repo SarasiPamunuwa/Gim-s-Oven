@@ -1,1 +1,3 @@
-# Gim-s-Oven
+# Gim-s-Oven- Documentation
+Overview: Gim’s Oven is a home based baking business which has expanded to everything in between signature dessert jars to classic baked goodies that cheer up even gloomiest of Kandy days. The purpose of this project is to provide a customer friendly background for the users and to attract more customers and to improve the business. Our project is to develop a website for ordering cake online. Our business website is basically useful for e-commerce transactions. It is specifically designed for the use of regular customers
+for ordering cakes. The users will be able to get to know the details about the products available at Gim’s Oven and the new products, discounts and offers will be updated in the website daily. Customer inquiries will be accepted through the website.
