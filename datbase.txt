@@ -42,7 +42,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `username`, `email`, `password`, `phone`, `dob`, `gender`) VALUES
-(1, 'Theesan', 'tkmtheesan1996@gmail.com', 'baa7e8db6d79df25f012e426112ed505', '0767078650', '1996-05-26', 'Male');
+(1, 'Theesani', 'tkmtheesani1996@gmail.com', 'baa7e8db6d79df25f012e426112ed505', '0767078650', '1995-05-26', 'Female');
 
 --
 -- Indexes for dumped tables
