@@ -1,0 +1,11 @@
+<?php
+	$host="localhost";
+	$user="root";
+	$pass="";
+	$db="Gim'sOven_db";
+
+	$con=mysqli_connect($host, $user, $pass, $db);
+	if(!$con){
+		echo "<script>alert('DB not connected')</script>";
+	}
+?>

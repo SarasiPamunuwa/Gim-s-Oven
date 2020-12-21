@@ -1,5 +1,5 @@
 <?php
-	session_start();
+	session_start(); //start
 
 	/*Logout code*/
 	if(isset($_GET['logout'])){
@@ -30,7 +30,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<h1>Login Page</h1>
+	<h1>Login Page</h1> //login
 	<hr>
 	<div class="container">
 
